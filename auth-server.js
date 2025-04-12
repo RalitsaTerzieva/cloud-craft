@@ -39,3 +39,19 @@ app.get('/', checkAuth, (req, res) => {
         userInfo: req.session.userInfo
     });
 });
+
+app.get('/login', (req, res) => {
+    const nonce = generators.nonce();
+    const state = generators.state();
+
+    req.session.nonce = nonce;
+    req.session.state = state;
+
+    const authUrl = client.authorizationUrl({
+        scope: 'phone openid email',
+        state: state,
+        nonce: nonce,
+    });
+
+    res.redirect(authUrl);
+});
