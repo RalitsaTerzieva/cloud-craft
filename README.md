@@ -30,7 +30,7 @@ Before running the application, ensure you have the following installed on your 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/cloud-craft.git
+    git clone https://github.com/RalitsaTerzieva/cloud-craft
     cd cloud-craft
     ```
 
