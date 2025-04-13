@@ -88,3 +88,10 @@ app.get(getPathFromURL('https://d84l1y8p4kdic.cloudfront.net'), async (req, res)
         res.redirect('/');
     }
 });
+
+// Logout route
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    const logoutUrl = `https://<user pool domain>/logout?client_id=qb8tnbk5l6lsl09gdi1bhuvp8&logout_uri=<logout uri>`;
+    res.redirect(logoutUrl);
+});
