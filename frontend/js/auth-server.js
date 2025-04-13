@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const { Issuer, generators } = require('openid-client');
-require('dotenv').config(); // Import and configure dotenv
+require('dotenv').config();
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -11,16 +11,16 @@ let client;
 async function initializeClient() {
     const issuer = await Issuer.discover(`https://${process.env.COGNITO_USER_POOL_DOMAIN}`);
     client = new issuer.Client({
-        client_id: process.env.COGNITO_CLIENT_ID,            // Use the environment variable
-        client_secret: process.env.COGNITO_CLIENT_SECRET,    // Use the environment variable
-        redirect_uris: [process.env.COGNITO_REDIRECT_URI],   // Use the environment variable
+        client_id: process.env.COGNITO_CLIENT_ID,            
+        client_secret: process.env.COGNITO_CLIENT_SECRET,    
+        redirect_uris: [process.env.COGNITO_REDIRECT_URI],   
         response_types: ['code']
     });
 };
 initializeClient().catch(console.error);
 
 app.use(session({
-    secret: process.env.SESSION_SECRET,  // Use the environment variable
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -73,7 +73,7 @@ app.get(getPathFromURL(process.env.COGNITO_REDIRECT_URI), async (req, res) => {
     try {
         const params = client.callbackParams(req);
         const tokenSet = await client.callback(
-            process.env.COGNITO_REDIRECT_URI, // Use the environment variable
+            process.env.COGNITO_REDIRECT_URI,
             params,
             {
                 nonce: req.session.nonce,
