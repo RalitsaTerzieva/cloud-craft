@@ -3,6 +3,8 @@ const session = require('express-session');
 const { Issuer, generators } = require('openid-client');
 const app = express();
 
+app.set('view engine', 'ejs');
+
 let client;
 // Initialize OpenID Client
 async function initializeClient() {
