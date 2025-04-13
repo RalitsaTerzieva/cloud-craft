@@ -1,13 +1,24 @@
+<!-- views/home.ejs -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AWS Upload App</title>
+    <title>Amazon Cognito authentication with Node example</title>
 </head>
 <body>
-  <h2>Upload File to S3</h2>
-  <input type="file" id="fileInput" />
-  <button onclick="uploadFile()">Upload</button>
+<div>
+    <h1>Amazon Cognito User Pool Demo</h1>
 
-  <script src="script.js" type="module"></script>
+    <% if (isAuthenticated) { %>
+        <div>
+            <h2>Welcome, <%= userInfo.username || userInfo.email %></h2>
+            <p>Here are some attributes you can use as a developer:</p>
+            <p><%= JSON.stringify(userInfo, null, 4) %></p>
+        </div>
+        <a href="/logout">Logout</a>
+    <% } else { %>
+        <p>Please log in to continue</p>
+        <a href="/login">Login</a>
+    <% } %>
+</div>
 </body>
 </html>
