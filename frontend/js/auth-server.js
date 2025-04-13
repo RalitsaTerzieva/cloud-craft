@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const { Issuer, generators } = require('openid-client');
+require('dotenv').config(); // Import and configure dotenv
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -8,24 +9,23 @@ app.set('view engine', 'ejs');
 let client;
 // Initialize OpenID Client
 async function initializeClient() {
-    const issuer = await Issuer.discover('https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_kesOojGTW');
+    const issuer = await Issuer.discover(`https://${process.env.COGNITO_USER_POOL_DOMAIN}`);
     client = new issuer.Client({
-        client_id: 'qb8tnbk5l6lsl09gdi1bhuvp8',
-        client_secret: '<client secret>',
-        redirect_uris: ['https://d84l1y8p4kdic.cloudfront.net'],
+        client_id: process.env.COGNITO_CLIENT_ID,            // Use the environment variable
+        client_secret: process.env.COGNITO_CLIENT_SECRET,    // Use the environment variable
+        redirect_uris: [process.env.COGNITO_REDIRECT_URI],   // Use the environment variable
         response_types: ['code']
     });
 };
 initializeClient().catch(console.error);
 
 app.use(session({
-    secret: 'some secret',
+    secret: process.env.SESSION_SECRET,  // Use the environment variable
     resave: false,
     saveUninitialized: false
 }));
 
 // routes
-
 const checkAuth = (req, res, next) => {
     if (!req.session.userInfo) {
         req.isAuthenticated = false;
@@ -69,11 +69,11 @@ function getPathFromURL(urlString) {
     }
 }
 
-app.get(getPathFromURL('https://d84l1y8p4kdic.cloudfront.net'), async (req, res) => {
+app.get(getPathFromURL(process.env.COGNITO_REDIRECT_URI), async (req, res) => {
     try {
         const params = client.callbackParams(req);
         const tokenSet = await client.callback(
-            'https://d84l1y8p4kdic.cloudfront.net',
+            process.env.COGNITO_REDIRECT_URI, // Use the environment variable
             params,
             {
                 nonce: req.session.nonce,
@@ -94,6 +94,6 @@ app.get(getPathFromURL('https://d84l1y8p4kdic.cloudfront.net'), async (req, res)
 // Logout route
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    const logoutUrl = `https://<user pool domain>/logout?client_id=qb8tnbk5l6lsl09gdi1bhuvp8&logout_uri=<logout uri>`;
+    const logoutUrl = `https://${process.env.COGNITO_USER_POOL_DOMAIN}/logout?client_id=${process.env.COGNITO_CLIENT_ID}&logout_uri=${process.env.COGNITO_LOGOUT_URI}`;
     res.redirect(logoutUrl);
 });
