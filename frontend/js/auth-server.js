@@ -2,8 +2,12 @@ const express = require('express');
 const session = require('express-session');
 const { Issuer, generators } = require('openid-client');
 require('dotenv').config();
+const path = require('path');
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
+app.set('views', path.join(__dirname, "..", 'views')); 
 app.set('view engine', 'ejs');
 
 let client;
@@ -69,6 +73,7 @@ function getPathFromURL(urlString) {
     }
 }
 
+
 app.get(getPathFromURL(process.env.COGNITO_REDIRECT_URI), async (req, res) => {
     try {
         const params = client.callbackParams(req);
@@ -96,4 +101,8 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     const logoutUrl = `https://${process.env.COGNITO_USER_POOL_DOMAIN}/logout?client_id=${process.env.COGNITO_CLIENT_ID}&logout_uri=${process.env.COGNITO_LOGOUT_URI}`;
     res.redirect(logoutUrl);
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
