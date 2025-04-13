@@ -55,3 +55,36 @@ app.get('/login', (req, res) => {
 
     res.redirect(authUrl);
 });
+
+// Helper function to get the path from the URL. Example: "http://localhost/hello" returns "/hello"
+function getPathFromURL(urlString) {
+    try {
+        const url = new URL(urlString);
+        return url.pathname;
+    } catch (error) {
+        console.error('Invalid URL:', error);
+        return null;
+    }
+}
+
+app.get(getPathFromURL('https://d84l1y8p4kdic.cloudfront.net'), async (req, res) => {
+    try {
+        const params = client.callbackParams(req);
+        const tokenSet = await client.callback(
+            'https://d84l1y8p4kdic.cloudfront.net',
+            params,
+            {
+                nonce: req.session.nonce,
+                state: req.session.state
+            }
+        );
+
+        const userInfo = await client.userinfo(tokenSet.access_token);
+        req.session.userInfo = userInfo;
+
+        res.redirect('/');
+    } catch (err) {
+        console.error('Callback error:', err);
+        res.redirect('/');
+    }
+});
