@@ -1,0 +1,6 @@
+Hello from CloudCraft backend! 👋
+
+This file is being used to test AWS S3 integration via Python and Boto3.
+
+If you’re reading this, the upload and download processes are working correctly! 🚀
+
