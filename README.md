@@ -167,6 +167,36 @@ You will need to configure AWS S3 to use it for file storage:
 2. **Set Bucket Policies**:
    - Set up your S3 bucket policies to allow appropriate permissions for uploading and downloading files.
 
+## AWS DynamoDB Configuration
+
+The application uses **AWS DynamoDB** to store file metadata, such as the filename, S3 key, upload timestamp, and user email. This makes it easier to track and manage uploaded files.
+
+### 1. **Create a DynamoDB Table**
+- Go to the DynamoDB Dashboard in the AWS Console.
+- Click **"Create Table"**
+  - **Table name**: `cloud-craft-app`
+  - **Partition key**: `filename` (Type: String)
+  - Leave other defaults as-is and create the table.
+
+### 2. **IAM Permissions**
+Ensure the AWS credentials used by your backend have permissions to access the DynamoDB table.
+
+Add a policy like this to your IAM user or role:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": [
+    "dynamodb:PutItem",
+    "dynamodb:GetItem",
+    "dynamodb:Scan"
+  ],
+  "Resource": "arn:aws:dynamodb:<your-region>:<your-account-id>:table/cloud-craft-app"
+}
+```
+
+
+
 ## Troubleshooting
 
 ### Common Errors:
