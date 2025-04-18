@@ -195,6 +195,15 @@ Add a policy like this to your IAM user or role:
 }
 ```
 
+3. .env Configuration
+
+```bash
+AWS_ACCESS_KEY_ID=<your_aws_access_key>
+AWS_SECRET_ACCESS_KEY=<your_aws_secret_key>
+AWS_REGION=<your_aws_region>
+```
+
+
 
 
 ## Troubleshooting
