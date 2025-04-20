@@ -1,6 +1,7 @@
 import os
 import boto3
 from dotenv import load_dotenv
+from datetime import datetime, timezone
 
 load_dotenv()
 
@@ -17,6 +18,8 @@ dynamodb = boto3.resource(
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
     region_name=os.getenv("AWS_REGION")
 )
+
+table = dynamodb.Table(os.getenv("DYNAMODB_TABLE_NAME", "cloud-craft-app"))
 
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
