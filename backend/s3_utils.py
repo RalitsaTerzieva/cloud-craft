@@ -31,3 +31,17 @@ def download_file(s3_key, destination_path):
     os.makedirs(os.path.dirname(destination_path), exist_ok=True)
     s3.download_file(BUCKET_NAME, s3_key, destination_path)
     print(f"Downloaded s3://{BUCKET_NAME}/{s3_key} to {destination_path}")
+
+def get_all_filenames_from_dynamodb():
+    """
+    Fetches all filenames from the DynamoDB table.
+    """
+    try:
+        response = table.scan()
+        items = response.get('Items', [])
+        
+        print("Filenames found in DynamoDB:")
+        for item in items:
+            print(item.get('filename'))
+    except Exception as e:
+        print(f"Error fetching filenames: {e}")
