@@ -1,5 +1,5 @@
 
-# Cloud Craft - Full Stack Authentication with AWS Cognito & S3
+# Cloud Craft - Full Stack Authentication with AWS Cognito & S3 & DynamoDb
 
 This is a full-stack web application project built with **Node.js** and **Python**, using **AWS Cognito** for user authentication and **AWS S3** for file storage. The application has a **frontend** built using **Express.js** with **EJS** templates, and a **backend** that utilizes **Python** to interact with AWS services.
 
