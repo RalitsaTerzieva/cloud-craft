@@ -5,8 +5,8 @@ const REGION = "us-east-1";
 const s3 = new S3Client({
   region: REGION,
   credentials: {
-    accessKeyId: "YOUR_ACCESS_KEY",        // Not recommended for frontend in production
-    secretAccessKey: "YOUR_SECRET_KEY",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
 
