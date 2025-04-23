@@ -1,6 +1,5 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-// You should replace these with real credentials (or use Cognito auth)
 const REGION = "us-east-1";
 const s3 = new S3Client({
   region: REGION,
@@ -15,7 +14,7 @@ window.uploadFile = async () => {
   if (!file) return alert("No file selected!");
 
   const params = {
-    Bucket: "your-s3-bucket-name",
+    Bucket: process.env.S3_BUCKET_NAME,
     Key: file.name,
     Body: file,
   };
