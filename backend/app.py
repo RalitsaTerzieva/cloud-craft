@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from s3_utils import upload_file, download_file
+from send_message import send_message_to_queue
 
 app = Flask(__name__)
 
@@ -18,6 +19,16 @@ def download(filename):
     local_path = f"./downloads/{filename}"
     download_file(filename, local_path)
     return jsonify({"message": "Download complete", "saved_to": local_path})
+
+@app.route('/send-to-queue', methods=['POST'])
+def send_to_queue():
+    data = request.json
+    file_name = data['file_name']
+    user_email = data['user_email']
+    
+    send_message_to_queue(file_name, user_email)
+    
+    return jsonify({"message": "Sent to SQS!"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
