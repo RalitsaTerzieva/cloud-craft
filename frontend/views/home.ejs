@@ -19,6 +19,21 @@
         <p>Please log in to continue</p>
         <a href="/login">Login</a>
     <% } %>
+
+    <form id="uploadForm">
+        <input type="file" id="fileInput" />
+        <button type="button" id="uploadButton">Upload File</button>
+    </form>
+    
+    <script src="/script.js"></script>
+    <script src="/sendToQueue.js"></script>
+    <script>
+      document.getElementById('uploadButton').addEventListener('click', async () => {
+        await uploadFile();
+        await sendToQueue(document.getElementById('fileInput').files[0].name, "<%= userInfo.email %>");
+      });
+    </script>
+    
 </div>
 </body>
 </html>
