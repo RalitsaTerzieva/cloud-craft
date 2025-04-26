@@ -6,7 +6,7 @@ load_dotenv()
 
 sqs = boto3.client(
     'sqs',
-    region_name=os.getenv("AWS_REGION"),
+    region_name=os.getenv("AWS_SQS_QUEUE_REGION"),
     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
 )
@@ -25,3 +25,7 @@ def send_message_to_queue(file_name, user_email):
     )
     
     print("Message sent to SQS:", response['MessageId'])
+
+
+if __name__ == "__main__":
+    send_message_to_queue("example_file.txt", "testuser@example.com")
