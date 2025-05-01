@@ -5,8 +5,11 @@ require('dotenv').config();
 const path = require('path');
 const app = express();
 
-app.set('views', path.join(__dirname, "..", 'views')); 
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+console.log("Views path is:", path.join(__dirname, 'views'));
+
 
 let client;
 // Initialize OpenID Client
@@ -40,7 +43,7 @@ const checkAuth = (req, res, next) => {
 app.get('/', checkAuth, (req, res) => {
     res.render('home', {
         isAuthenticated: req.isAuthenticated,
-        userInfo: req.session.userInfo
+        userInfo: req.session.userInfo || {}
     });
 });
 
